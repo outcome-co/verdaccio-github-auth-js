@@ -5,10 +5,9 @@
     "main": "index.js",
     "scripts": {
         "lint": "eslint --ignore-path .gitignore --max-warnings 0 .",
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "pretest": "npm run type-check",
-        "type-check": "tsc",
-        "docs": "gulp docs"
+        "type-check": "tsc"
     },
     "repository": {
         "type": "git",
