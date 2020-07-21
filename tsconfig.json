@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    // General settings for code interpretation
+    "target": "es2017",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "checkJs": true,
+    "allowJs": true,
+    "noEmit": true,
+
+    // General settings for code interpretation
+    "newLine": "LF",
+
+    // Console output settings
+    "pretty": true
+  },
+
+  "exclude": ["node_modules", "coverage", "**/*.test.js", "dist"]
+}

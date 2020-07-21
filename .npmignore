@@ -1,0 +1,13 @@
+coverage
+docs
+fixtures
+**/*.test.js
+.github
+pre-commit.sh
+.pre-commit-config.yaml
+.eslintrc.js
+babel.config.js
+commitlint.config.js
+jest.config.js
+gulpfile.js
+tsconfig.json

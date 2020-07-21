@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  npm_config_cache: .cache/npm
+
+jobs:
+    publish_npm:
+      name: Publish npm package
+      runs-on: ubuntu-latest
+      if: github.event.base_ref == 'refs/heads/master'
+      needs: [commit_lint, lint_and_test]
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Use Node.js 12.x
+          uses: actions/setup-node@v1
+          with:
+            node-version: '12.x'
+            registry-url: https://registry.npmjs.org/
+
+        - name: Configure npm cache
+          uses: actions/cache@v1
+          with:
+            path: ${{ env.npm_config_cache }}
+            key: npm-${{ hashFiles('./package*.json') }}
+
+        - name: Install dependencies
+          run: npm install
+
+        - name: Build distribution
+          run: npm run build
+
+        - name: Publish npm package
+          run: npm publish --access public
+          env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}

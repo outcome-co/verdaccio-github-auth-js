@@ -1,0 +1,27 @@
+{
+    "name": "@outcome-co/verdaccio-github-auth",
+    "version": "1.0.0",
+    "description": "My npm package",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint --ignore-path .gitignore --max-warnings 0 .",
+        "test": "jest",
+        "pretest": "npm run type-check",
+        "type-check": "tsc",
+        "docs": "gulp docs"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/outcome-co/verdaccio-github-auth.git"
+    },
+    "author": "Engineering <engineering@outcome.co>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/outcome-co/verdaccio-github-auth/issues"
+    },
+    "homepage": "https://github.com/outcome-co/verdaccio-github-auth#readme",
+    "dependencies": {},
+    "devDependencies": {
+        "@outcome-co/devkit": "^4.1.0"
+    }
+}
