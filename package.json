@@ -21,6 +21,6 @@
     "homepage": "https://github.com/outcome-co/verdaccio-github-auth#readme",
     "dependencies": {},
     "devDependencies": {
-        "@outcome-co/devkit": "^5.2.0"
+        "@outcome-co/devkit": "^6.0.0"
     }
 }
