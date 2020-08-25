@@ -205,8 +205,6 @@ export default class GithubScenario {
                         // the team was already deleted when its parent
                         // was deleted
                         }).catch(() => {})
-                    } else {
-                        return true
                     }
                 })
 
@@ -221,8 +219,6 @@ export default class GithubScenario {
                             owner: this.organization,
                             repo: r.name
                         })
-                    } else {
-                        return true
                     }
                 })
 

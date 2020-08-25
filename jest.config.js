@@ -1,6 +1,6 @@
-const { merge, mergeWith } = require('@outcome-co/devkit/utils/mergeConfig')
+const { merge, mergeWith } = require('@outcome-co/devkit/dist/utils/mergeConfig')
 
-const jestConfig = require('@outcome-co/devkit/config/jest')
+const jestConfig = require('@outcome-co/devkit/dist/config/jest')
 
 // We want to exclude graphql.js from the coverage during unit tests
 // we only want coverage during integration tests

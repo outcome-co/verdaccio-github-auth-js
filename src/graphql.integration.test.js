@@ -1,5 +1,5 @@
 import GraphQLClient from './graphql'
-import { skipAllForUnit } from '@outcome-co/devkit/utils/skipIf'
+import { skipAllForUnit } from '@outcome-co/devkit/dist/utils/skipIf'
 import { token, org, userMap, memberUsername, memberToken } from '../test/env'
 import GithubScenario from '../test/github'
 

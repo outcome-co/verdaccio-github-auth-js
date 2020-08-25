@@ -55,6 +55,8 @@ jobs:
         with:
           path: ${{ env.npm_config_cache }}
           key: npm-${{ hashFiles('./package*.json') }}
+          restore-keys: |
+            npm
 
       - name: Install dependencies
         run: npm install

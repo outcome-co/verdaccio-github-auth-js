@@ -1,1 +1,1 @@
-module.exports = require('@outcome-co/devkit/config/eslint')
+module.exports = require('@outcome-co/devkit/dist/config/eslint')

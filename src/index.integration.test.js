@@ -1,5 +1,5 @@
 import GithubAuthPlugin, { AuthenticationError } from './index'
-import { skipAllForUnit } from '@outcome-co/devkit/utils/skipIf'
+import { skipAllForUnit } from '@outcome-co/devkit/dist/utils/skipIf'
 import GithubScenario from '../test/github'
 import { every, keys, pickBy, has, forOwn, first, reduce, includes, map, filter, isEqual } from 'lodash'
 import { token, org, userMap, memberUsername, memberToken, nonMemberUsername } from '../test/env'

@@ -559,7 +559,7 @@ class GithubAuthPlugin {
     packageNames () {
         this.logger.trace('Getting package names')
 
-        /** @type Object<string, string> */
+        /** @type {Object<string, string>} */
         const packages = {}
 
         const packageNames = () => {

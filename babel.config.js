@@ -1,1 +1,1 @@
-module.exports = require('@outcome-co/devkit/config/babel')
+module.exports = require('@outcome-co/devkit/dist/config/babel')

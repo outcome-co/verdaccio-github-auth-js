@@ -29,15 +29,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.npm_config_cache }}
-          key: npm-${{ hashFiles('./package*.json') }}
+          key: npm-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            npm
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build distribution
-        run: npm run build
-
       - name: Publish npm package
-        run: npm run dist
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
