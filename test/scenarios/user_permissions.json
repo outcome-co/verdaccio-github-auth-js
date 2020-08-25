@@ -1,0 +1,93 @@
+{
+    "repositories": [
+        {
+            "name": "repo_1",
+            "files": {
+                "package.json": "{\"name\": \"package-one-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "repo_1_package-{{sessionId}}"
+            }
+        },
+        {
+            "name": "repo_2",
+            "files": {
+                "package.json": "{\"name\": \"package-two-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-two-{{sessionId}}"
+            },
+            "collaborators": [
+                {
+                    "name": "$MEMBER_USER",
+                    "role": "pull"
+                }
+            ]
+        },
+        {
+            "name": "repo_3",
+            "files": {
+                "package.json": "{\"name\": \"package-three-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-three-{{sessionId}}"
+            },
+            "collaborators": [
+                {
+                    "name": "$MEMBER_USER",
+                    "role": "triage"
+                }
+            ]
+        },
+        {
+            "name": "repo_4",
+            "files": {
+                "package.json": "{\"name\": \"package-four-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-four-{{sessionId}}"
+            },
+            "collaborators": [
+                {
+                    "name": "$MEMBER_USER",
+                    "role": "push"
+                }
+            ]
+        },
+        {
+            "name": "repo_5",
+            "files": {
+                "package.json": "{\"name\": \"package-five-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-five-{{sessionId}}"
+            },
+            "collaborators": [
+                {
+                    "name": "$MEMBER_USER",
+                    "role": "maintain"
+                }
+            ]
+        },
+        {
+            "name": "repo_6",
+            "files": {
+                "package.json": "{\"name\": \"package-six-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-six-{{sessionId}}"
+            },
+            "collaborators": [
+                {
+                    "name": "$MEMBER_USER",
+                    "role": "admin"
+                }
+            ]
+        }
+    ],
+    "users": [
+        {
+            "name": "$MEMBER_USER"
+        }
+    ]
+}

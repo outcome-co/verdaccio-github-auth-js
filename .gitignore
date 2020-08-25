@@ -1,7 +1,12 @@
 node_modules
 coverage
+dist
 .cache
 .dist
 run/config.yaml
 run/.*.json
 .env
+.vscode
+
+run/config/config.yaml
+run/storage

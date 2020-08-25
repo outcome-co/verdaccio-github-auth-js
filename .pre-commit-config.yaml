@@ -15,6 +15,13 @@ repos:
       - id: check-merge-conflict
         stages: [commit] 
 
+  - repo: https://github.com/outcome-co/action-check-todos
+    rev: v1.5.0
+    hooks:
+    - id: check-todos
+      args: ['src', 'test']
+      stages: [push]
+
   - repo: local
     hooks:
 
@@ -24,7 +31,7 @@ repos:
       language: system
       stages: [commit, push]
       verbose: true
-      entry: sh -c "NODE_ENV=ci npm run lint"
+      entry: npm run lint
       types: [file, javascript]
       pass_filenames: false
 
@@ -33,5 +40,5 @@ repos:
       language: system
       stages: [push]
       verbose: true
-      entry: sh -c "NODE_ENV=ci npm run test"
+      entry: npm run test:unit
       pass_filenames: false

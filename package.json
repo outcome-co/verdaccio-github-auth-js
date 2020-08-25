@@ -1,26 +1,57 @@
 {
-    "name": "@outcome-co/verdaccio-github-auth",
-    "version": "1.0.0",
-    "description": "My npm package",
-    "main": "index.js",
-    "scripts": {
-        "lint": "eslint --ignore-path .gitignore --max-warnings 0 .",
-        "test": "jest --passWithNoTests",
-        "pretest": "npm run type-check",
-        "type-check": "tsc"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/outcome-co/verdaccio-github-auth.git"
-    },
-    "author": "Engineering <engineering@outcome.co>",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/outcome-co/verdaccio-github-auth/issues"
-    },
-    "homepage": "https://github.com/outcome-co/verdaccio-github-auth#readme",
-    "dependencies": {},
-    "devDependencies": {
-        "@outcome-co/devkit": "^7.0.1"
-    }
+  "name": "@outcome-co/verdaccio-github-auth",
+  "version": "0.1.0",
+  "description": "My npm package",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore --max-warnings 0 .",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "TEST_ENV=test jest ./src",
+    "test:integration": "TEST_ENV=integration jest ./src",
+    "pretest": "npm run type-check",
+    "type-check": "tsc",
+    "clean": "rm -rf dist coverage",
+    "build": "npm run clean && babel src -d dist",
+    "prepublishOnly": "npm run build",
+    "watch": "watch 'npm run build' src --wait=0.5",
+    "server": "npm run build && nodemon --delay 1 --watch dist --signal SIGTERM ./run/server.js",
+    "secrets:sync": "node ./bin/secrets.js sync",
+    "secrets:clear": "node ./bin/secrets.js clear"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/outcome-co/verdaccio-github-auth"
+  },
+  "author": "Engineering <engineering@outcome.co>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/outcome-co/verdaccio-github-auth/issues"
+  },
+  "homepage": "https://github.com/outcome-co/verdaccio-github-auth#readme",
+  "dependencies": {
+    "@octokit/graphql": "^4.5.2",
+    "@verdaccio/commons-api": "^9.7.1",
+    "json-to-graphql-query": "^2.0.0",
+    "lodash": "^4.17.19",
+    "node-cache": "^5.1.2"
+  },
+  "devDependencies": {
+    "@octokit/rest": "^18.0.3",
+    "@outcome-co/devkit": "^7.0.1",
+    "dotenv": "^8.2.0",
+    "jest-retries": "^1.0.1",
+    "mustache": "^4.0.1",
+    "nodemon": "^2.0.4",
+    "objectmodel": "^4.2.2",
+    "promise-retry": "^2.0.1",
+    "tweetsodium": "0.0.5",
+    "verdaccio": "^4.8.0",
+    "yargs": "^15.4.1"
+  },
+  "engines": {
+    "node": ">=10"
+  }
 }
