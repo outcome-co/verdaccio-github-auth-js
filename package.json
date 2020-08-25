@@ -1,6 +1,6 @@
 {
   "name": "@outcome-co/verdaccio-github-auth",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "My npm package",
   "main": "./dist/index.js",
   "files": [
