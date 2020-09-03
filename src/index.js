@@ -360,7 +360,7 @@ class GithubAuthPlugin {
     }
 
     /* istanbul ignore next */
-    addUser (user, password, cb) {
+    adduser (user, password, cb) {
         // We don't handle adding users
         cb(null, false)
     }

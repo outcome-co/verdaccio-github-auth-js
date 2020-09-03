@@ -1,6 +1,10 @@
 const startVerdaccio = require('verdaccio')
 const { parseConfigFile } = require('verdaccio/build/lib/utils')
 
+const logger = require('verdaccio/build/lib/logger')
+
+logger.setup(null, { logStart: false })
+
 const path = require('path')
 
 const configFile = path.join(__dirname, 'config', 'config.yaml')

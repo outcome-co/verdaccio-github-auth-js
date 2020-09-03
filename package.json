@@ -1,7 +1,7 @@
 {
   "name": "@outcome-co/verdaccio-github-auth",
   "version": "1.1.2",
-  "description": "My npm package",
+  "description": "Verdaccio Github Authentication Plugin",
   "main": "./dist/index.js",
   "files": [
     "dist"
@@ -23,14 +23,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/outcome-co/verdaccio-github-auth"
+    "url": "https://github.com/outcome-co/verdaccio-github-auth-js"
   },
   "author": "Engineering <engineering@outcome.co>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/outcome-co/verdaccio-github-auth/issues"
+    "url": "https://github.com/outcome-co/verdaccio-github-auth-js/issues"
   },
-  "homepage": "https://github.com/outcome-co/verdaccio-github-auth#readme",
+  "homepage": "https://github.com/outcome-co/verdaccio-github-auth-js#readme",
   "dependencies": {
     "@octokit/graphql": "^4.5.4",
     "@verdaccio/commons-api": "^9.7.1",
@@ -53,5 +53,8 @@
   },
   "engines": {
     "node": ">=10"
+  },
+  "optionalDependencies": {
+    "@outcome-co/verdaccio-google-cloud": "^1.1.0"
   }
 }
