@@ -1,6 +1,6 @@
 # verdaccio-github-auth
 ![Release](https://github.com/outcome-co/verdaccio-github-auth/workflows/Release/badge.svg?branch=v1.1.1) 
-![version-badge](https://img.shields.io/badge/version-1.1.2-brightgreen)
+![version-badge](https://img.shields.io/badge/version-1.1.3-brightgreen)
 
 An authentication plugin for [Verdaccio](https://verdaccio.org) that uses a Github Organization as an authentication and authorization backend.
 
