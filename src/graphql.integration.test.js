@@ -15,12 +15,18 @@ function withScenario (path) {
     return new GithubScenario(token, org, path, userMap)
 }
 
+const logger = {
+    warn: jest.fn(),
+    trace: jest.fn(),
+    fatal: jest.fn()
+}
+
 skipAllForUnit('graphql.js', () => {
     describe('GraphQLClient', () => {
         it('is able to make authenticated requests', () => {
             expect.assertions(1)
 
-            const client = new GraphQLClient(memberToken)
+            const client = new GraphQLClient(memberToken, logger)
             const query = {
                 viewer: {
                     login: true
@@ -34,7 +40,7 @@ skipAllForUnit('graphql.js', () => {
 
         it('fetches multiple pages', () => {
             return withScenario('multiple_teams').run((scenario) => {
-                const client = new GraphQLClient(token)
+                const client = new GraphQLClient(token, logger)
                 const teamCount = scenario.teams.length
 
                 expect.assertions(2)

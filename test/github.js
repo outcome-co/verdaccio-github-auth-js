@@ -4,6 +4,7 @@ import { Octokit } from '@octokit/rest'
 import promiseRetry from 'promise-retry'
 import { map } from 'lodash'
 import path from 'path'
+import { RateLimiter } from 'limiter'
 
 /**
  * Loads a scenario from a JSON file.
@@ -35,6 +36,30 @@ function toBase64 (content) {
     return Buffer.from(content).toString('base64')
 }
 
+/**
+ * Perform a fn call with optional rate limiting.
+ *
+ * @param {RateLimiter} limiter - The rate limiter.
+ * @param {Function} fn - The function to call.
+ * @returns {Promise} - The return value of the function.
+ */
+function withRateLimiting (limiter, fn) {
+    // Only activate rate limiting in GH
+    if (process.env.GITHUB_ACTIONS === 'true') {
+        return new Promise((resolve, reject) => {
+            limiter.removeTokens(1, (e, remainingTokens) => {
+                if (e) {
+                    reject(e)
+                } else {
+                    resolve(fn())
+                }
+            })
+        })
+    } else {
+        return Promise.resolve(fn())
+    }
+}
+
 export default class GithubScenario {
     /**
      * Instantiate a new Github Scenario.
@@ -49,6 +74,9 @@ export default class GithubScenario {
         this.scenario = loadScenario(path, userMap, this.sessionId)
 
         this.client = new Octokit({ auth: token })
+
+        // Arbitrary number
+        this.limiter = new RateLimiter(3, 'second')
         this.organization = organization
     }
 
@@ -113,11 +141,13 @@ export default class GithubScenario {
             const addUsers = createdTeam.then((createdTeam) => {
                 const ops = map(team.members, (member) => {
                     return promiseRetry({ retries: 3 }, (retry) => {
-                        return this.client.teams.addOrUpdateMembershipForUserInOrg({
-                            org: this.organization,
-                            team_slug: createdTeam.data.slug,
-                            username: member
-                        }).catch(retry)
+                        return withRateLimiting(this.limiter, () => {
+                            return this.client.teams.addOrUpdateMembershipForUserInOrg({
+                                org: this.organization,
+                                team_slug: createdTeam.data.slug,
+                                username: member
+                            }).catch(retry)
+                        })
                     })
                 })
 
@@ -127,13 +157,15 @@ export default class GithubScenario {
             const setRepoPermissions = createdTeam.then((createdTeam) => {
                 const ops = map(team.repositories, (repo) => {
                     return promiseRetry({ retries: 3 }, (retry) => {
-                        return this.client.teams.addOrUpdateRepoPermissionsInOrg({
-                            org: this.organization,
-                            owner: this.organization,
-                            repo: repo.name,
-                            permission: repo.role,
-                            team_slug: createdTeam.data.slug
-                        }).catch(retry)
+                        return withRateLimiting(this.limiter, () => {
+                            return this.client.teams.addOrUpdateRepoPermissionsInOrg({
+                                org: this.organization,
+                                owner: this.organization,
+                                repo: repo.name,
+                                permission: repo.role,
+                                team_slug: createdTeam.data.slug
+                            }).catch(retry)
+                        })
                     })
                 })
 
@@ -154,12 +186,14 @@ export default class GithubScenario {
             const addUsers = createdRepo.then(() => {
                 const ops = map(repo.collaborators, (collaborator) => {
                     return promiseRetry({ retries: 3 }, (retry) => {
-                        return this.client.repos.addCollaborator({
-                            owner: this.organization,
-                            repo: repo.name,
-                            username: collaborator.name,
-                            permission: collaborator.role
-                        }).catch(retry)
+                        return withRateLimiting(this.limiter, () => {
+                            return this.client.repos.addCollaborator({
+                                owner: this.organization,
+                                repo: repo.name,
+                                username: collaborator.name,
+                                permission: collaborator.role
+                            }).catch(retry)
+                        })
                     })
                 })
 
@@ -169,12 +203,14 @@ export default class GithubScenario {
             const addFiles = createdRepo.then(() => {
                 const ops = map(repo.files, (fileContent, file) => {
                     return promiseRetry({ retries: 3 }, (retry) => {
-                        return this.client.repos.createOrUpdateFileContents({
-                            owner: this.organization,
-                            repo: repo.name,
-                            path: file,
-                            message: 'Test File',
-                            content: toBase64(fileContent)
+                        return withRateLimiting(this.limiter, () => {
+                            return this.client.repos.createOrUpdateFileContents({
+                                owner: this.organization,
+                                repo: repo.name,
+                                path: file,
+                                message: 'Test File',
+                                content: toBase64(fileContent)
+                            })
                         })
                     })
                 })
@@ -196,15 +232,17 @@ export default class GithubScenario {
             .then((teams) => {
                 const deletions = map(teams, (t) => {
                     if (scenarioTeamNames.has(t.name)) {
-                        return this.client.teams.deleteInOrg({
-                            org: this.organization,
-                            team_slug: t.slug
+                        return withRateLimiting(this.limiter, () => {
+                            return this.client.teams.deleteInOrg({
+                                org: this.organization,
+                                team_slug: t.slug
 
-                        // We want to swallow the errors that may occur
-                        // when deleting a team, since it may just be that
-                        // the team was already deleted when its parent
-                        // was deleted
-                        }).catch(() => {})
+                            // We want to swallow the errors that may occur
+                            // when deleting a team, since it may just be that
+                            // the team was already deleted when its parent
+                            // was deleted
+                            }).catch(() => {})
+                        })
                     }
                 })
 
@@ -215,9 +253,11 @@ export default class GithubScenario {
             .then((repos) => {
                 const deletions = map(repos, (r) => {
                     if (scenarioRepoNames.has(r.name)) {
-                        return this.client.repos.delete({
-                            owner: this.organization,
-                            repo: r.name
+                        return withRateLimiting(this.limiter, () => {
+                            return this.client.repos.delete({
+                                owner: this.organization,
+                                repo: r.name
+                            })
                         })
                     }
                 })

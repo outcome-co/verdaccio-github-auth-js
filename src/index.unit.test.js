@@ -171,7 +171,7 @@ describe('index.js unit tests', () => {
 
                     plugin.verifyUserIdentity('user', 'token').catch(() => true).finally(() => {
                         expect(GraphQLClient).toHaveBeenCalledTimes(1)
-                        expect(GraphQLClient).toHaveBeenCalledWith('token')
+                        expect(GraphQLClient).toHaveBeenCalledWith('token', options.logger)
                         done()
                     })
                 })

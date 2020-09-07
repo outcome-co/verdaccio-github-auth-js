@@ -112,7 +112,7 @@ class GithubAuthPlugin {
         this.excludeRepositories = config.excludeRepositories
         this.repositoryPattern = config.repositoryPattern || /.*/
 
-        this.client = new GraphQLClient(token)
+        this.client = new GraphQLClient(token, this.logger)
         this.cache = new Cache()
 
         return this
@@ -160,9 +160,13 @@ class GithubAuthPlugin {
      * @see {@link https://verdaccio.org/docs/en/plugin-auth#authentication-callback}
      */
     authenticate (user, token, cb) {
-        this.verifyUserIdentity(user, token).then(() => {
-            return this.verifyOrganization(user)
-        }).then(() => {
+        const identity = () => {
+            return this.verifyUserIdentity(user, token).then(() => {
+                return this.verifyOrganization(user)
+            })
+        }
+
+        this.cache.get(`identity_${user}`, identity).then(() => {
             return this.getUserTeams(user)
         }).then((teams) => {
             cb(null, teams)
@@ -174,10 +178,10 @@ class GithubAuthPlugin {
 
             if (e instanceof AuthenticationError) {
                 loginState = e.loginState
-                this.logger.warn(`Unable to authenticate user ${user}: ${message}`)
+                this.logger.warn({ user, message }, 'Unable to authenticate user @{user}: @{message}')
             } else {
                 loginState = null
-                this.logger.fatal(`Authentication system error: ${message}`)
+                this.logger.fatal({ message }, 'Authentication system error: @{message}')
             }
 
             /* The verdaccio callback is a bit weird.
@@ -205,7 +209,7 @@ class GithubAuthPlugin {
      * @returns {Promise<Array<string>>} A Promise of the list of teams for this user.
      */
     getUserTeams (user) {
-        this.logger.trace(`Getting teams for ${user}`)
+        this.logger.trace({ user }, 'Getting teams for @{user}')
         return this.getOrganizationTeams().then((allTeams) => {
             return reduce(allTeams, (userTeams, users, team) => {
                 if (includes(users, user)) {
@@ -222,7 +226,7 @@ class GithubAuthPlugin {
      * @returns {Promise<Teams>} A Promise of the list of teams of the organization.
      */
     getOrganizationTeams () {
-        this.logger.trace(`Getting teams for ${this.organization}`)
+        this.logger.trace({ organization: this.organization }, 'Getting teams for @{organization}')
         const query = {
             organization: {
                 __args: {
@@ -265,7 +269,7 @@ class GithubAuthPlugin {
      * @returns {Promise<boolean>} A Promise of the result.
      */
     verifyOrganization (user) {
-        this.logger.trace(`Verifying organization for ${user}`)
+        this.logger.trace({ user }, 'Verifying organization for @{user}')
 
         const query = this.organizationQuery({
             membersWithRole: {
@@ -289,9 +293,9 @@ class GithubAuthPlugin {
     }
 
     verifyUserIdentity (user, token) {
-        this.logger.trace(`Verifying identity for ${user}`)
+        this.logger.trace({ user }, 'Verifying identity for @{user}')
 
-        const userClient = new GraphQLClient(token)
+        const userClient = new GraphQLClient(token, this.logger)
 
         const query = {
             viewer: {
@@ -324,6 +328,10 @@ class GithubAuthPlugin {
     // eslint-disable-next-line camelcase
     allow_access (user, pkg, cb) {
         this.packagePermissionsForUserForPackage(user, pkg.name).then((permissions) => {
+            this.logger.trace({ result: permissions.has(readPermission) }, 'user has access permission for package? @{result}')
+            this.logger.trace({ user }, 'user:@{user}')
+            this.logger.trace({ permission: readPermission }, 'permission:@{permission}')
+            this.logger.trace({ pkg }, 'pkg:@{pkg}')
             cb(null, permissions.has(readPermission))
         }).catch((err) => {
             cb(err, undefined)
@@ -340,6 +348,10 @@ class GithubAuthPlugin {
     // eslint-disable-next-line camelcase
     allow_publish (user, pkg, cb) {
         this.packagePermissionsForUserForPackage(user, pkg.name).then((permissions) => {
+            this.logger.trace({ result: permissions.has(writePermission) }, 'user has publish permission for package? @{result}')
+            this.logger.trace({ user }, 'user:@{user}')
+            this.logger.trace({ permission: writePermission }, 'permission:@{permission}')
+            this.logger.trace({ pkg }, 'pkg:@{pkg}')
             cb(null, permissions.has(writePermission))
         }).catch((err) => {
             cb(err, undefined)
@@ -399,7 +411,7 @@ class GithubAuthPlugin {
                 // Get the list of repositories
                 return this.repositoryPermissions().then((allRepositoryPermissions) => {
                     /** @type {UserPackagePermissions} */
-                    const permissions = {}
+                    const packagePermissionsForUser = {}
 
                     forOwn(packageNames, (repoName, packageName) => {
                         let packagePermissions = new Set()
@@ -426,11 +438,13 @@ class GithubAuthPlugin {
 
                         /* istanbul ignore else */
                         if (packagePermissions.size > 0) {
-                            permissions[packageName] = packagePermissions
+                            packagePermissionsForUser[packageName] = packagePermissions
                         }
                     })
 
-                    return permissions
+                    this.logger.trace({ packagePermissionsForUser, user }, 'packagePermissionsForUser: @{user} - @{packagePermissionsForUser}')
+
+                    return packagePermissionsForUser
                 })
             })
         }
@@ -495,7 +509,7 @@ class GithubAuthPlugin {
 
         const repositoryPermissions = () => {
             return this.client.getAll(query, 'organization.repositories').then((response) => {
-                return reduce(response.organization.repositories.edges, (repositories, repository) => {
+                const repositoryPermissions = reduce(response.organization.repositories.edges, (repositories, repository) => {
                     const permissions = { users: {}, teams: {} }
 
                     repositories[repository.node.name] = permissions
@@ -530,6 +544,10 @@ class GithubAuthPlugin {
 
                     return repositories
                 }, {})
+
+                this.logger.trace({ repositoryPermissions }, 'repositoryPermissions: @{repositoryPermissions}')
+
+                return repositoryPermissions
             })
         }
 
@@ -559,11 +577,11 @@ class GithubAuthPlugin {
     packageNames () {
         this.logger.trace('Getting package names')
 
-        /** @type {Object<string, string>} */
-        const packages = {}
-
         const packageNames = () => {
             return this.packageFiles().then((packageFiles) => {
+                /** @type {Object<string, string>} */
+                const packageNames = {}
+
                 forOwn(packageFiles, (packageFileContent, repositoryName) => {
                     if (!packageFileContent) return
                     if (this.includeRepositories && !includes(this.includeRepositories, repositoryName)) return
@@ -573,11 +591,13 @@ class GithubAuthPlugin {
                     const packageName = GithubAuthPlugin.getPackageName(packageFileContent)
 
                     if (packageName) {
-                        packages[packageName] = repositoryName
+                        packageNames[packageName] = repositoryName
                     }
                 })
 
-                return packages
+                this.logger.trace({ packageNames }, 'packageNames: @{packageNames}')
+
+                return packageNames
             })
         }
 
@@ -614,10 +634,14 @@ class GithubAuthPlugin {
 
         return this.cache.get('packageFiles', () => {
             return this.client.getAll(query, 'organization.repositories').then((result) => {
-                return reduce(result.organization.repositories.edges, (packageMap, edge) => {
+                const packageFiles = reduce(result.organization.repositories.edges, (packageMap, edge) => {
                     packageMap[edge.node.name] = get(edge, 'node.object.text', null)
                     return packageMap
                 }, {})
+
+                this.logger.trace({ packageFiles }, 'packageFiles: @{packageFiles}')
+
+                return packageFiles
             })
         })
     }

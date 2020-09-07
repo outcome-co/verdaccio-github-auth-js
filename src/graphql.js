@@ -9,13 +9,16 @@ export default class {
      * Creates the GraphQL client.
      *
      * @param {string} token - The Github token.
+     * @param {*} logger - A logger object.
      */
-    constructor (token) {
+    constructor (token, logger) {
         this.client = graphql.defaults({
             headers: {
                 authorization: `token ${token}`
             }
         })
+
+        this.logger = logger
     }
 
     /**
@@ -28,7 +31,13 @@ export default class {
      */
     execute (queryObj) {
         const queryStr = jsonToGraphQLQuery({ query: queryObj })
-        return this.client({ query: queryStr }).catch((err) => {
+
+        this.logger.trace({ queryStr }, 'graphql: executing query @{queryStr}')
+
+        return this.client({ query: queryStr }).then((response) => {
+            this.logger.trace({ response }, 'graphql: response @{response}')
+            return response
+        }).catch((err) => {
             throw err
         })
     }

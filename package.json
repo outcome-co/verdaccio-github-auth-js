@@ -35,6 +35,7 @@
     "@octokit/graphql": "^4.5.4",
     "@verdaccio/commons-api": "^9.7.1",
     "json-to-graphql-query": "^2.0.0",
+    "limiter": "^1.1.5",
     "lodash": "^4.17.20",
     "node-cache": "^5.1.2"
   },
