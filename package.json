@@ -50,7 +50,7 @@
     "promise-retry": "^2.0.1",
     "tweetsodium": "0.0.5",
     "verdaccio": "^4.8.1",
-    "yargs": "^15.4.1"
+    "yargs": "^16.0.3"
   },
   "engines": {
     "node": ">=10"
