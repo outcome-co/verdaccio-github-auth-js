@@ -76,7 +76,7 @@ export default class GithubScenario {
         this.client = new Octokit({ auth: token })
 
         // Arbitrary number
-        this.limiter = new RateLimiter(3, 'second')
+        this.limiter = new RateLimiter(1, 'second')
         this.organization = organization
     }
 

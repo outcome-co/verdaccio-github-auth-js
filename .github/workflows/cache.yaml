@@ -1,19 +1,21 @@
-name: Release
+name: Cache
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - master
 
 env:
   YARN_CACHE_FOLDER: .cache/yarn
   node_version: 13.x
+  # yarn needs *some* value in NODE_AUTH_TOKEN to work - it doesn't have
+  # to be valid so long as you're not communicating with the registry
+  NODE_AUTH_TOKEN: XXX
 
 jobs:
-  publish_npm:
-    name: Publish npm package
+  update_cache:
+    name: Update yarn cache
     runs-on: ubuntu-latest
-    if: github.event.base_ref == 'refs/heads/master'
 
     steps:
       - name: Checkout code
@@ -21,11 +23,10 @@ jobs:
         with:
           ref: master
 
-      - name: Use Node.js ${{ env.node_version }}
+      - name: Use Node.js
         uses: actions/setup-node@v2.1.1
         with:
-          node-version: "${{ env.node_version }}"
-          registry-url: https://registry.npmjs.org/
+          node-version: ${{ env.node_version }}
 
       - name: Configure yarn cache
         uses: actions/cache@v2
@@ -37,8 +38,3 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Publish npm package
-        run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}

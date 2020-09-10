@@ -18,6 +18,7 @@ jobs:
           with:
             token: ${{ secrets.OTTO_TOKEN }}
             fetch-depth: 0
+            ref: master
 
         # If we don't have correct commit messages, we 
         # can't get the new version number

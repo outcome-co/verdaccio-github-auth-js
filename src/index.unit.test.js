@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-done-callback */
 import GithubAuthPlugin, { AuthenticationError, APIError, setUnion } from './index'
 import GraphQLClient from './graphql'
 import { expectSetsToBeStrictlyEqual } from '../test/helpers'

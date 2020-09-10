@@ -2,12 +2,12 @@ name: Checks
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review, edited]
     branches:
       - master
 
 env:
-  npm_config_cache: .cache/npm
+  YARN_CACHE_FOLDER: .cache/yarn
   node_version: 13.x
   VERDACCIO_TEST_MEMBER_USERNAME: ${{ secrets.VERDACCIO_TEST_MEMBER_USERNAME }}
   VERDACCIO_TEST_MEMBER_TOKEN: ${{ secrets.VERDACCIO_TEST_MEMBER_TOKEN }}
@@ -40,32 +40,36 @@ jobs:
   checks_and_tests:
     name: Linting and tests
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.OTTO_TOKEN }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Use Node.js
         uses: actions/setup-node@v2.1.1
         with:
           node-version: ${{ env.node_version }}
 
-      - name: Configure npm cache
+      - name: Configure yarn cache
         uses: actions/cache@v2
         with:
-          path: ${{ env.npm_config_cache }}
-          key: npm-${{ hashFiles('./package*.json') }}
+          path: ${{ env.YARN_CACHE_FOLDER }}
+          key: yarn-${{ hashFiles('./yarn.lock') }}
           restore-keys: |
-            npm
+            yarn
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Run linter
-        run: npm run lint
+        run: yarn lint
 
       - name: Run unit tests
-        run: npm run test
+        run: yarn test
 
   auto_merge_dependabot:
       name: Auto-approve dependabot pull requests
