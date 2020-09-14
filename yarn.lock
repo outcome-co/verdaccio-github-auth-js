@@ -1305,9 +1305,9 @@
     "@types/node" ">= 8"
 
 "@outcome-co/devkit@^7.1.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@outcome-co/devkit/-/devkit-7.2.0.tgz#35e0488ac499bd5050d5e52ff63ea1fb58190ff5"
-  integrity sha512-8cEIIYHQ8Nc92VS9aU8919TaDMR7lVbYxscKrneeIiKZPm3psbJil2/tBLLDaEwuiSylNOjiuhfIS2TyKIWN/w==
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/@outcome-co/devkit/-/devkit-7.2.1.tgz#1a8616afe78415795757bbe6540ac01bce48cb6a"
+  integrity sha512-rhDRsETPkqGg5Ei0SUQ+ojnN3pQc93LZPYBuQC9vW35Yh7fyVScLDx/tBU6SF8J7t0R1t8Kh8cae6wdmc0uxDg==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/preset-env" "^7.9.5"
