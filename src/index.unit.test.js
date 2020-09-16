@@ -68,7 +68,8 @@ describe('index.js unit tests', () => {
                     logger: {
                         warn: jest.fn(),
                         trace: jest.fn(),
-                        fatal: jest.fn()
+                        fatal: jest.fn(),
+                        error: jest.fn()
                     }
                 }
 

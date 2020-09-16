@@ -18,7 +18,8 @@ function withScenario (path) {
 const logger = {
     warn: jest.fn(),
     trace: jest.fn(),
-    fatal: jest.fn()
+    fatal: jest.fn(),
+    error: jest.fn()
 }
 
 skipAllForUnit('graphql.js', () => {

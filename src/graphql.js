@@ -1,22 +1,37 @@
 const { graphql } = require('@octokit/graphql')
 const { jsonToGraphQLQuery, EnumType } = require('json-to-graphql-query')
 const { get, set, concat, extend, cloneDeep } = require('lodash')
+const { withRateLimiting } = require('./rateLimiting')
 
 export const enumValue = v => new EnumType(v)
+
+/**
+ * @typedef {import('@verdaccio/types').Logger} Logger
+ * @typedef {import('limiter').RateLimiter} RateLimiter
+ */
 
 export default class {
     /**
      * Creates the GraphQL client.
      *
      * @param {string} token - The Github token.
-     * @param {*} logger - A logger object.
+     * @param {Logger} logger - A logger object.
+     * @param {RateLimiter} [rateLimiter] - A rate limiter.
      */
-    constructor (token, logger) {
+    constructor (token, logger, rateLimiter) {
         this.client = graphql.defaults({
             headers: {
                 authorization: `token ${token}`
             }
         })
+
+        /* istanbul ignore next */
+        if (rateLimiter) {
+            this.ratedLimitedExecute = (fn) => withRateLimiting(rateLimiter, fn)
+        /* istanbul ignore else */
+        } else {
+            this.ratedLimitedExecute = (fn) => fn()
+        }
 
         this.logger = logger
     }
@@ -30,15 +45,17 @@ export default class {
      * @see {@link https://github.com/dupski/json-to-graphql-query}
      */
     execute (queryObj) {
-        const queryStr = jsonToGraphQLQuery({ query: queryObj })
+        return this.ratedLimitedExecute(() => {
+            const queryStr = jsonToGraphQLQuery({ query: queryObj })
 
-        this.logger.trace({ queryStr }, 'graphql: executing query @{queryStr}')
+            this.logger.trace({ queryStr }, 'graphql: executing query @{queryStr}')
 
-        return this.client({ query: queryStr }).then((response) => {
-            this.logger.trace({ response }, 'graphql: response @{response}')
-            return response
-        }).catch((err) => {
-            throw err
+            return this.client({ query: queryStr }).then((response) => {
+                this.logger.trace({ response }, 'graphql: response @{response}')
+                return response
+            }).catch((err) => {
+                throw err
+            })
         })
     }
 

@@ -1,5 +1,6 @@
 import GraphQLClient, { enumValue } from './graphql'
 import Cache from './cache'
+import { RateLimiter } from 'limiter'
 const { get, has, map, includes, reduce, forOwn, forEach, clone } = require('lodash')
 
 export class ConfigurationError extends Error {}
@@ -87,15 +88,36 @@ const permissionsMap = {
  */
 
 /**
+ * @typedef {Object} GithubAuthPluginConfig
+ * @property {string} organization
+ * @property {string} token
+ * @property {string[]} [includeRepositories]
+ * @property {string[]} [excludeRepositories]
+ * @property {RegExp} [repositoryPattern]
+ * @property {RateLimiter} [rateLimiter]
+ */
+
+/**
+ * @typedef {Object} PluginOptions
+ * @property {import('@verdaccio/types').Logger} logger
+ */
+
+/**
  * Custom Verdaccio Authenticate Plugin.
  */
 class GithubAuthPlugin {
+    /**
+     * Init.
+     *
+     * @param {GithubAuthPluginConfig} config - The plugin config.
+     * @param {PluginOptions} options - The plugin options.
+     */
     constructor (config, options) {
         if (typeof config === 'undefined') {
             throw new ConfigurationError('Missing configuration')
         }
 
-        const { organization, token } = config
+        const { organization, token, rateLimiter } = config
 
         if (!organization) {
             throw new ConfigurationError('Missing organization!')
@@ -112,7 +134,7 @@ class GithubAuthPlugin {
         this.excludeRepositories = config.excludeRepositories
         this.repositoryPattern = config.repositoryPattern || /.*/
 
-        this.client = new GraphQLClient(token, this.logger)
+        this.client = new GraphQLClient(token, this.logger, rateLimiter)
         this.cache = new Cache()
 
         return this
@@ -181,7 +203,7 @@ class GithubAuthPlugin {
                 this.logger.warn({ user, message }, 'Unable to authenticate user @{user}: @{message}')
             } else {
                 loginState = null
-                this.logger.fatal({ message }, 'Authentication system error: @{message}')
+                this.logger.error({ message }, 'Authentication system error: @{message}')
             }
 
             /* The verdaccio callback is a bit weird.

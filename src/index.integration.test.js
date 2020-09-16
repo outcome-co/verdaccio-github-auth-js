@@ -3,6 +3,7 @@ import { skipAllForUnit } from '@outcome-co/devkit/dist/utils/skipIf'
 import GithubScenario from '../test/github'
 import { every, keys, pickBy, has, forOwn, first, reduce, includes, map, filter, isEqual } from 'lodash'
 import { token, org, userMap, memberUsername, memberToken, nonMemberUsername } from '../test/env'
+import { rateLimiter } from '../test/rateLimiting'
 
 const it = require('jest-retries')
 const retries = 3
@@ -26,7 +27,8 @@ function withScenario (path) {
 
 const config = {
     organization: org,
-    token: token
+    token,
+    rateLimiter
 }
 
 const options = {

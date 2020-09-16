@@ -42,6 +42,7 @@
   "devDependencies": {
     "@octokit/rest": "^18.0.3",
     "@outcome-co/devkit": "^7.1.0",
+    "@verdaccio/types": "^9.7.2",
     "dotenv": "^8.2.0",
     "jest-retries": "^1.0.1",
     "mustache": "^4.0.1",
@@ -57,5 +58,8 @@
   },
   "optionalDependencies": {
     "@outcome-co/verdaccio-google-cloud": "^1.1.0"
+  },
+  "resolutions": {
+    "node-forge": "^0.10.0"
   }
 }

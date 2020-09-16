@@ -12,3 +12,5 @@ export const userMap = {
     $MEMBER_USER: memberUsername,
     $ADMIN_USER: adminUsername
 }
+
+export const insideGithubActions = process.env.GITHUB_ACTIONS === 'true'

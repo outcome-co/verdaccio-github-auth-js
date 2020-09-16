@@ -14,14 +14,18 @@ env:
 
 jobs:
   update_cache:
-    name: Update yarn cache
+    name: Update Cache
     runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, 'chore(version)')"
+    env:
+      GITHUB_TOKEN: ${{ secrets.OTTO_TOKEN }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
           ref: master
+          fetch-depth: 0
 
       - name: Use Node.js
         uses: actions/setup-node@v2.1.1
@@ -38,3 +42,4 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
+
