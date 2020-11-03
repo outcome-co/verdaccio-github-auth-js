@@ -1312,9 +1312,9 @@
     "@types/node" ">= 8"
 
 "@outcome-co/devkit@^7.1.0":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@outcome-co/devkit/-/devkit-7.2.1.tgz#1a8616afe78415795757bbe6540ac01bce48cb6a"
-  integrity sha512-rhDRsETPkqGg5Ei0SUQ+ojnN3pQc93LZPYBuQC9vW35Yh7fyVScLDx/tBU6SF8J7t0R1t8Kh8cae6wdmc0uxDg==
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/@outcome-co/devkit/-/devkit-7.2.2.tgz#9bdf851abbbb63cc069a856f8bd0cd1645283be1"
+  integrity sha512-zOS4l9aE0+Nyfez5srs/viCdamSSJpgG+vyVNpe0gluCasZ3tR+6DD8y4AIBAYAw/ShdDggmuRIvbOGYAGM2vg==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/preset-env" "^7.9.5"
@@ -1328,7 +1328,7 @@
     babel-jest "^26.3.0"
     babel-plugin-rewire "^1.2.0"
     eslint "^7.3.1"
-    eslint-config-standard "^14.1.1"
+    eslint-config-standard "^16.0.0"
     eslint-plugin-import "^2.20.2"
     eslint-plugin-jest "^24.0.0"
     eslint-plugin-jsdoc "^30.2.1"
@@ -3109,10 +3109,10 @@ escodegen@^1.11.1, escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-standard@^14.1.1:
-  version "14.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-14.1.1.tgz#830a8e44e7aef7de67464979ad06b406026c56ea"
-  integrity sha512-Z9B+VR+JIXRxz21udPTL9HpFMyoMUEeX1G251EQ6e05WD9aPVtVBn09XUmZ259wCMlCDmYDSZG62Hhm+ZTJcUg==
+eslint-config-standard@^16.0.0:
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-16.0.1.tgz#9a385eea27f96b7918cb53f07e01e9d10cc56401"
+  integrity sha512-WBBiQQZdaPyL+4sPkGWhWrHCDtvJoU195B9j8yXE9uFQnX34gMXI5CeBRm95gx3PMEZPM5OpwET10hH4F4SxCA==
 
 eslint-import-resolver-node@^0.3.3:
   version "0.3.4"
