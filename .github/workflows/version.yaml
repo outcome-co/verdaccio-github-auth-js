@@ -31,6 +31,7 @@ jobs:
           run: |
             git config --local user.email "otc-builder@outcome.co"
             git config --local user.name "Otto the Bot"
+
         - name: Bump version
           id: bump_version
           uses: outcome-co/action-update-version@v0.8.5

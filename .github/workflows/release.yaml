@@ -7,7 +7,10 @@ on:
 
 env:
   YARN_CACHE_FOLDER: .cache/yarn
-  node_version: 13.x
+  node_version: 14.x
+  # yarn needs *some* value in NODE_AUTH_TOKEN to work - it doesn't have
+  # to be valid so long as you're not communicating with the registry
+  NODE_AUTH_TOKEN: XXX
 
 jobs:
   publish_npm:

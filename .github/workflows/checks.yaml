@@ -8,7 +8,7 @@ on:
 
 env:
   YARN_CACHE_FOLDER: .cache/yarn
-  node_version: 13.x
+  node_version: 14.x
   VERDACCIO_TEST_MEMBER_USERNAME: ${{ secrets.VERDACCIO_TEST_MEMBER_USERNAME }}
   VERDACCIO_TEST_MEMBER_TOKEN: ${{ secrets.VERDACCIO_TEST_MEMBER_TOKEN }}
   VERDACCIO_TEST_NONMEMBER_USERNAME: ${{ secrets.VERDACCIO_TEST_NONMEMBER_USERNAME }}
@@ -24,17 +24,21 @@ jobs:
     name: Lint commit messages
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.OTTO_TOKEN }}
+
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.2
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
       - name: Lint commit messages
         uses: wagoid/commitlint-github-action@v2
         with:
           failOnWarnings: true
+
+      - uses: amannn/action-semantic-pull-request@v2.1.0
 
   # Always lint
   checks_and_tests:

@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v2.2.0
+    rev: v3.0.0
     hooks:
       - id: commitlint
         stages: [commit-msg]
@@ -8,19 +8,12 @@ repos:
 
   # Stop commits to master
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.5.0  # Use the ref you want to point at
+    rev: v3.3.0  # Use the ref you want to point at
     hooks:
       - id: no-commit-to-branch
         args: [--branch, master] 
       - id: check-merge-conflict
         stages: [commit] 
-
-  - repo: https://github.com/outcome-co/action-check-todos
-    rev: v1.5.0
-    hooks:
-    - id: check-todos
-      args: ['src', 'test']
-      stages: [push]
 
   - repo: local
     hooks:
@@ -31,7 +24,7 @@ repos:
       language: system
       stages: [commit, push]
       verbose: true
-      entry: npm run lint
+      entry: yarn lint
       types: [file, javascript]
       pass_filenames: false
 
@@ -40,5 +33,13 @@ repos:
       language: system
       stages: [push]
       verbose: true
-      entry: npm run test:unit
+      entry: yarn test:unit
+      pass_filenames: false
+
+    - id: metapak
+      name: metapak
+      language: system
+      stages: [push]
+      verbose: true
+      entry: yarn metapak -s
       pass_filenames: false
