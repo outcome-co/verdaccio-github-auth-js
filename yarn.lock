@@ -1317,10 +1317,10 @@
     auto-curry "^0.2.1"
     skip-if "^1.1.1"
 
-"@outcome-co/metapak-core@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@outcome-co/metapak-core/-/metapak-core-1.1.2.tgz#bdc84c828eac4ae7df21e19d018094d57d511205"
-  integrity sha512-CEo1fnHe0HJ91h4BoC2qm+y636+vjo8IMSvnP5uWo8kMCAnLeF/irdn9XYcXrm6qSiagtFNPRqy9I0OV0U3qxw==
+"@outcome-co/metapak-core@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@outcome-co/metapak-core/-/metapak-core-1.2.1.tgz#365215e5db27af668f05466cbe9927d4b52ad845"
+  integrity sha512-xca/H38TEczGeJ3a5bw2scKhGJ38fazFSY1vMgiQ7gYYZKn7ZYznQ56Cod7KYxbL/MyiB4IL2EGMqjlf+hyJkw==
   dependencies:
     lodash "^4.17.20"
 
