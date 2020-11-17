@@ -1318,9 +1318,9 @@
     skip-if "^1.1.1"
 
 "@outcome-co/metapak-core@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@outcome-co/metapak-core/-/metapak-core-1.2.1.tgz#365215e5db27af668f05466cbe9927d4b52ad845"
-  integrity sha512-xca/H38TEczGeJ3a5bw2scKhGJ38fazFSY1vMgiQ7gYYZKn7ZYznQ56Cod7KYxbL/MyiB4IL2EGMqjlf+hyJkw==
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@outcome-co/metapak-core/-/metapak-core-1.2.2.tgz#67c63e8858c604614c3a0235feb806e06efd0466"
+  integrity sha512-9wsxkwkFeeYZ3oZXyRiCPzuIVjm1EQ2djhFOGn+llPxulPSdITtOEzIVQl/cUyr9pLywBHgjybWYizgYar52MA==
   dependencies:
     lodash "^4.17.20"
 
