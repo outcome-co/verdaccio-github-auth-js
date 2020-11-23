@@ -42,7 +42,7 @@ export default class {
      * @param {object} queryObj - The query to execute.
      * @returns {Promise<object>} A Promise on the result.
      *
-     * @see {@link https://github.com/dupski/json-to-graphql-query}
+     * See https://github.com/dupski/json-to-graphql-query.
      */
     execute (queryObj) {
         return this.ratedLimitedExecute(() => {
@@ -65,7 +65,7 @@ export default class {
      * @param {object} queryObj - The query to execute.
      * @returns {Promise<object>} A Promise on the result.
      *
-     * @see {@link https://github.com/dupski/json-to-graphql-query}
+     * See https://github.com/dupski/json-to-graphql-query.
      */
     get (queryObj) {
         return this.execute(queryObj)
@@ -79,7 +79,7 @@ export default class {
      * @param {string} path - The path to the node which will be paginated.
      * @returns {Promise<object>} A Promise of the result.
      *
-     * @see {@link https://github.com/dupski/json-to-graphql-query}
+     * See https://github.com/dupski/json-to-graphql-query.
      */
     getAll (queryObj, path) {
         // Make a copy so we don't modify the original

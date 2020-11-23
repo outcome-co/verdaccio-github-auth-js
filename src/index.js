@@ -179,7 +179,7 @@ class GithubAuthPlugin {
      * @param {string} token - The token.
      * @param {VerdaccioAccessCallback} cb - The callback.
      *
-     * @see {@link https://verdaccio.org/docs/en/plugin-auth#authentication-callback}
+     * See https://verdaccio.org/docs/en/plugin-auth#authentication-callback.
      */
     authenticate (user, token, cb) {
         const identity = () => {
