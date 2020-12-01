@@ -1,10 +1,9 @@
 repos:
-  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v3.0.0
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v2.8.2
     hooks:
-      - id: commitlint
+      - id: commitizen
         stages: [commit-msg]
-        additional_dependencies: ['@commitlint/config-conventional']
 
   # Stop commits to master
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -34,12 +33,4 @@ repos:
       stages: [push]
       verbose: true
       entry: yarn test:unit
-      pass_filenames: false
-
-    - id: metapak
-      name: metapak
-      language: system
-      stages: [push]
-      verbose: true
-      entry: yarn metapak -s
       pass_filenames: false
