@@ -216,16 +216,16 @@ describe('index.js unit tests', () => {
                     })
                 })
 
-                it('returns true if the user matches the token', (done) => {
+                it('returns true if the user matches the token in a case insensitive way', (done) => {
                     expect.assertions(1)
-                    const user = 'user'
+                    const user = 'Some-User'
 
                     GraphQLClient.mockImplementation(() => {
                         return {
                             get: () => {
                                 return Promise.resolve({
                                     viewer: {
-                                        login: user
+                                        login: 'some-user'
                                     }
                                 })
                             }

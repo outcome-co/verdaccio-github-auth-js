@@ -332,7 +332,9 @@ class GithubAuthPlugin {
                 throw new AuthenticationError(e.message, null)
             }
         }).then((response) => {
-            if (response.viewer.login === user) {
+            if (response.viewer.login.localeCompare(user, undefined, { sensitivity: 'accent' }) === 0) {
+                // With { sensitivity: 'accent' } option, strings that do not have the same base letters or accents are considered unequal
+                // This allows case insensitive comparison.
                 return true
             } else {
                 throw new AuthenticationError('Username does not match token', false)
