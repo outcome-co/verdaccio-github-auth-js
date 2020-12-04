@@ -275,7 +275,7 @@ class GithubAuthPlugin {
         const organizationTeams = () => {
             return this.client.getAll(query, 'organization.teams').then((result) => {
                 return reduce(result.organization.teams.edges, (allTeams, edge) => {
-                    allTeams[edge.node.name] = map(edge.node.members.nodes, n => n.login)
+                    allTeams[edge.node.name] = map(edge.node.members.nodes, n => n.login.toLowerCase())
                     return allTeams
                 }, {})
             })
@@ -304,7 +304,7 @@ class GithubAuthPlugin {
         })
 
         return this.client.getAll(query, 'organization.membersWithRole').then((result) => {
-            const members = map(result.organization.membersWithRole.edges, (edge) => edge.node.login)
+            const members = map(result.organization.membersWithRole.edges, (edge) => edge.node.login.toLowerCase())
 
             if (includes(members, user)) {
                 return true
@@ -332,9 +332,7 @@ class GithubAuthPlugin {
                 throw new AuthenticationError(e.message, null)
             }
         }).then((response) => {
-            if (response.viewer.login.localeCompare(user, undefined, { sensitivity: 'accent' }) === 0) {
-                // With { sensitivity: 'accent' } option, strings that do not have the same base letters or accents are considered unequal
-                // This allows case insensitive comparison.
+            if (response.viewer.login.toLowerCase() === user.toLowerCase()) {
                 return true
             } else {
                 throw new AuthenticationError('Username does not match token', false)

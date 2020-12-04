@@ -8,7 +8,7 @@ import { rateLimiter } from '../test/rateLimiting'
 const it = require('jest-retries')
 const retries = 3
 
-jest.setTimeout(30000)
+jest.setTimeout(40000)
 
 /**
  * Load the scenario at the given path.

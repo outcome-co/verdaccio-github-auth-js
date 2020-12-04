@@ -3,7 +3,7 @@ import { skipAllForUnit } from '@outcome-co/devkit/dist/utils/skipIf'
 import { token, org, userMap, memberUsername, memberToken } from '../test/env'
 import GithubScenario from '../test/github'
 
-jest.setTimeout(30000)
+jest.setTimeout(40000)
 
 /**
  * Load the scenario at the given path.

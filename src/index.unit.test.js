@@ -283,7 +283,7 @@ describe('index.js unit tests', () => {
                                                         members: {
                                                             nodes: [
                                                                 {
-                                                                    login: user
+                                                                    login: user.toUpperCase() // Github can return Users with uppercase characters
                                                                 }
                                                             ]
                                                         }
@@ -366,7 +366,7 @@ describe('index.js unit tests', () => {
                                             edges: [
                                                 {
                                                     node: {
-                                                        login: user
+                                                        login: user.toUpperCase() // Github can return username with uppercase characters
                                                     }
                                                 }
                                             ]
