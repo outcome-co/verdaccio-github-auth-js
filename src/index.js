@@ -537,7 +537,7 @@ class GithubAuthPlugin {
                     repositories[repository.node.name] = permissions
 
                     forEach(repository.node.collaborators.edges, (collaborator) => {
-                        const username = collaborator.node.login
+                        const username = collaborator.node.login.toLowerCase()
 
                         // We want to build up the set of permissions for the user
                         const userRepoPermissions = reduce(collaborator.permissionSources, (sourcePermissions, permissionSource) => {

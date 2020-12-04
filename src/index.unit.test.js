@@ -732,7 +732,7 @@ describe('index.js unit tests', () => {
                                                 edges: [
                                                     {
                                                         node: {
-                                                            login: 'user_1'
+                                                            login: 'User_1' // test with uppercase login
                                                         },
                                                         permissionSources: [
                                                             {
