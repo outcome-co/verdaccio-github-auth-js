@@ -1,6 +1,6 @@
 {
   "name": "@outcome-co/verdaccio-github-auth",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Verdaccio Github Authentication Plugin",
   "main": "./dist/index.js",
   "files": [
