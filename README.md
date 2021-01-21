@@ -53,13 +53,13 @@ To avoid having to manually rebuild the library after each change, you can autom
 In one terminal, run the following command to automatically rebuild the library when the source changes
 
 ```sh
-npm run watch
+yarn run watch
 ```
 
 In another terminal, run the following command to start the Verdaccio server, and have it automatically reload when the library is rebuilt
 
 ```sh
-npm run server
+yarn run server
 ```
 
 ### Configuration
