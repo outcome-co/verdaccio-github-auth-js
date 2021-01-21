@@ -115,7 +115,9 @@
   },
   "resolutions": {
     "chokidar": "^3.4.0",
-    "node-forge": "^0.10.0"
+    "node-forge": "^0.10.0",
+    "date-and-time": "^0.14.2",
+    "dompurify": "^2.0.17"
   },
   "publishConfig": {
     "access": "public"

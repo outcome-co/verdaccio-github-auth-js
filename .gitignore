@@ -328,3 +328,7 @@ yalc.lock
 
 # Build artifacts
 dist
+
+# Test files
+/storage
+/run/config/config.yaml
