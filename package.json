@@ -44,7 +44,8 @@
   "dependencies": {
     "@octokit/graphql": "^4.5.4",
     "@verdaccio/commons-api": "^9.7.1",
-    "json-to-graphql-query": "^2.0.0",
+    "graphql": "^15.4.0",
+    "graphql-tag": "^2.11.0",
     "limiter": "^1.1.5",
     "lodash": "^4.17.20",
     "node-cache": "^5.1.2",
@@ -89,7 +90,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
-    "graphql": "^15.4.0",
     "gulp": "^4.0.2",
     "jest": "^26.6.3",
     "listr": "^0.14.3",
@@ -109,9 +109,6 @@
   },
   "engines": {
     "node": ">=10"
-  },
-  "optionalDependencies": {
-    "@outcome-co/verdaccio-google-cloud": "^1.1.0"
   },
   "resolutions": {
     "chokidar": "^3.4.0",
