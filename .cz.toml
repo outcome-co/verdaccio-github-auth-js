@@ -1,6 +1,6 @@
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "2.0.1"
+version = "2.0.2"
 tag_format = "v$version"
 bump_message = "chore(version): $current_version → $new_version"
 version_files = ["README.md:version-badge", "package.json:version"]
