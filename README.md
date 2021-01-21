@@ -69,4 +69,4 @@ The configuration file for the development server is stored in `./run/config/`. 
 ## Integration Tests
 
 Integration tests interact directly with the Github API.
-To set them up, please see [here](test/README.md)
+To set them up, please see [here](src/test/README.md)
