@@ -1,0 +1,107 @@
+{
+    "name": "team_permissions",
+    "repositories": [
+        {
+            "name": "repo_1",
+            "files": {
+                "package.json": "{\"name\": \"package-one-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-one-{{sessionId}}"
+            }
+        },
+        {
+            "name": "repo_2",
+            "files": {
+                "package.json": "{\"name\": \"package-two-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-two-{{sessionId}}"
+            }
+        },
+        {
+            "name": "repo_3",
+            "files": {
+                "package.json": "{\"name\": \"package-three-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-three-{{sessionId}}"
+            }
+        },
+        {
+            "name": "repo_4",
+            "files": {
+                "package.json": "{\"name\": \"package-four-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-four-{{sessionId}}"
+            }
+        },
+        {
+            "name": "repo_5",
+            "files": {
+                "package.json": "{\"name\": \"package-five-{{sessionId}}\"}"
+            },
+            "meta": {
+                "package": "package-four-{{sessionId}}"
+            }
+        }
+    ],
+    "users": [
+        {
+            "name": "$MEMBER_USER"
+        }
+    ],
+    "teams": [
+        {
+            "name": "maintainers",
+            "members": ["$MEMBER_USER"],
+            "repositories": [
+                {
+                    "name": "repo_1",
+                    "role": "MAINTAIN"
+                }
+            ]
+        },
+        {
+            "name": "triage",
+            "members": ["$MEMBER_USER"],
+            "repositories": [
+                {
+                    "name": "repo_2",
+                    "role": "TRIAGE"
+                }
+            ]
+        },
+        {
+            "name": "pull",
+            "members": ["$MEMBER_USER"],
+            "repositories": [
+                {
+                    "name": "repo_3",
+                    "role": "READ"
+                }
+            ]
+        },
+        {
+            "name": "push",
+            "members": ["$MEMBER_USER"],
+            "repositories": [
+                {
+                    "name": "repo_4",
+                    "role": "WRITE"
+                }
+            ]
+        },
+        {
+            "name": "admins",
+            "members": ["$MEMBER_USER"],
+            "repositories": [
+                {
+                    "name": "repo_5",
+                    "role": "ADMIN"
+                }
+            ]
+        }
+    ]
+}

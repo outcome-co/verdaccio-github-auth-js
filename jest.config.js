@@ -5,11 +5,11 @@ const jestConfig = require('@outcome-co/devkit/dist/config/jest')
 // We want to exclude graphql.js from the coverage during unit tests
 // we only want coverage during integration tests
 const additionalExcludes = [
-    '!./src/test/**/*.js'
+    '!./src/test/**/*.ts'
 ]
 
 if (process.env.TEST_ENV === 'test') {
-    additionalExcludes.push('!./src/graphql.js')
+    additionalExcludes.push('!./src/graphql.ts')
 }
 
 module.exports = merge(jestConfig, {

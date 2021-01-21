@@ -1,0 +1,15 @@
+overwrite: true
+schema: "src/schema.js"
+documents:
+  - src/queries/*.graphql
+generates:
+  src/schemaTypes.ts:
+    plugins:
+      - add:
+            content: '/* eslint-disable */'
+      - "typescript"
+      - "typescript-resolvers"
+      - "typescript-document-nodes"
+      - "typescript-operations"
+    config:
+      avoidOptionals: true

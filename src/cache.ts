@@ -1,16 +1,17 @@
 import NodeCache from 'node-cache'
 
 export default class Cache {
-    constructor () {
+    cache: NodeCache
+
+    constructor() {
         this.cache = new NodeCache({
             stdTTL: 300, // 5 minutes
             useClones: false
         })
     }
 
-    get (key, fn) {
-        let value
-        value = this.cache.get(key)
+    get<T>(key: string, fn: () => T): T {
+        let value = this.cache.get<T>(key)
         if (value === undefined) {
             value = fn()
             this.cache.set(key, value)

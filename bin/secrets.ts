@@ -1,21 +1,10 @@
-const sodium = require('tweetsodium')
-const { Octokit } = require('@octokit/rest')
-const pkg = require('../package.json')
+import sodium from 'tweetsodium'
+import { Octokit } from '@octokit/rest'
+import pkg from '../package.json'
+import yargs from 'yargs'
+import Listr, { ListrTask } from 'listr'
 
-const urlPattern = /^https:\/\/github.com\/(?<owner>[^/]+)\/(?<repo>[^/]+)\/?$/
-
-const parseUrl = function () {
-    const match = urlPattern.exec(pkg.repository.url)
-
-    return {
-        org: match.groups.owner,
-        repo: match.groups.repo
-    }
-}
-
-const { org, repo } = parseUrl()
-
-require('dotenv').config()
+import { org, repo, getClient } from './lib'
 
 const secrets = [
     'VERDACCIO_TEST_MEMBER_USERNAME',
@@ -29,28 +18,20 @@ const secrets = [
     'VERDACCIO_TEST_ADDITIONAL_ADMINS'
 ]
 
-const getClient = function () {
-    const token = process.env.GITHUB_TOKEN
-
-    if (!token) {
-        throw Error('Missing GITHUB_TOKEN environment variable')
-    }
-
-    return new Octokit({ auth: token })
-}
-
-const sync = function () {
+const sync = () => {
     console.log(`Syncing secrets to ${org}:${repo}`)
 
     const client = getClient()
 
     return getPublicKey(client, org, repo).then((keyData) => {
-        return Promise.all(secrets.map((secretVar) => {
-            const value = process.env[secretVar]
-            return storeSecret(client, org, repo, keyData.data.key, keyData.data.key_id, secretVar, value).then(() => {
-                console.log(`Created secret ${secretVar}`)
-            })
+        const tasks: ListrTask[] = secrets.map(secretVar => ({
+            title: secretVar,
+            task: () => storeSecret(client, org, repo, keyData.data.key, keyData.data.key_id, secretVar, <string> process.env[secretVar])
         }))
+
+        const runner = new Listr(tasks, { concurrent: true })
+
+        return runner.run()
     })
 }
 
@@ -59,25 +40,28 @@ const clear = function () {
 
     const client = getClient()
 
-    return Promise.all(secrets.map((secretVar) => {
-        return client.actions.deleteRepoSecret({
+    const tasks: ListrTask[] = secrets.map(secretVar => ({
+        title: secretVar,
+        task: () => client.actions.deleteRepoSecret({
             owner: org,
             repo,
             secret_name: secretVar
-        }).then(() => {
-            console.log(`Cleared ${secretVar}`)
         })
     }))
+
+    const runner = new Listr(tasks, { concurrent: true })
+
+    return runner.run()
 }
 
-const getPublicKey = function (client, org, repo) {
+const getPublicKey = function (client: Octokit, org: string, repo: string) {
     return client.actions.getRepoPublicKey({
         owner: org,
         repo
     })
 }
 
-const storeSecret = function (client, org, repo, key, keyId, name, value) {
+const storeSecret = function (client: Octokit, org: string, repo: string, key: string, keyId: string, name: string, value: string) {
     return new Promise((resolve, reject) => {
         try {
             // Convert the message and key to Uint8Array's (Buffer implements that interface)
@@ -106,10 +90,12 @@ const storeSecret = function (client, org, repo, key, keyId, name, value) {
 }
 
 // eslint-disable-next-line no-unused-expressions
-require('yargs')
+yargs
     .usage('Usage: $0 <command>')
     .demandCommand(1)
     .version(pkg.version)
-    .command('sync', `Create or update the secrets on ${org}:${repo}`, {}, () => sync())
-    .command('clear', `Clear the secrets from ${org}:${repo}`, {}, () => clear())
+    // eslint-disable-next-line no-void
+    .command('sync', `Create or update the secrets on ${org}:${repo}`, {}, () => { void sync() })
+    // eslint-disable-next-line no-void
+    .command('clear', `Clear the secrets from ${org}:${repo}`, {}, () => { void clear() })
     .argv

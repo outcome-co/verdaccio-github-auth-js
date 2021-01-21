@@ -1,4 +1,5 @@
 {
+    "name": "user_permissions",
     "repositories": [
         {
             "name": "repo_1",
@@ -20,7 +21,7 @@
             "collaborators": [
                 {
                     "name": "$MEMBER_USER",
-                    "role": "pull"
+                    "role": "READ"
                 }
             ]
         },
@@ -35,7 +36,7 @@
             "collaborators": [
                 {
                     "name": "$MEMBER_USER",
-                    "role": "triage"
+                    "role": "TRIAGE"
                 }
             ]
         },
@@ -50,7 +51,7 @@
             "collaborators": [
                 {
                     "name": "$MEMBER_USER",
-                    "role": "push"
+                    "role": "WRITE"
                 }
             ]
         },
@@ -65,7 +66,7 @@
             "collaborators": [
                 {
                     "name": "$MEMBER_USER",
-                    "role": "maintain"
+                    "role": "MAINTAIN"
                 }
             ]
         },
@@ -80,7 +81,7 @@
             "collaborators": [
                 {
                     "name": "$MEMBER_USER",
-                    "role": "admin"
+                    "role": "ADMIN"
                 }
             ]
         }

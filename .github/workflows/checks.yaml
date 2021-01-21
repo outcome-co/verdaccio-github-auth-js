@@ -9,6 +9,9 @@ on:
 env:
   YARN_CACHE_FOLDER: .cache/yarn
   node_version: 14.x
+  # yarn needs *some* value in NODE_AUTH_TOKEN to work - it doesn't have
+  # to be valid so long as you're not communicating with the registry
+  NODE_AUTH_TOKEN: XXX
   VERDACCIO_TEST_MEMBER_USERNAME: ${{ secrets.VERDACCIO_TEST_MEMBER_USERNAME }}
   VERDACCIO_TEST_MEMBER_TOKEN: ${{ secrets.VERDACCIO_TEST_MEMBER_TOKEN }}
   VERDACCIO_TEST_NONMEMBER_USERNAME: ${{ secrets.VERDACCIO_TEST_NONMEMBER_USERNAME }}
@@ -18,6 +21,7 @@ env:
   VERDACCIO_TEST_ORGANIZATION: ${{ secrets.VERDACCIO_TEST_ORGANIZATION }}
   VERDACCIO_TEST_TOKEN: ${{ secrets.VERDACCIO_TEST_TOKEN }}
   VERDACCIO_TEST_ADDITIONAL_ADMINS: ${{ secrets.VERDACCIO_TEST_ADDITIONAL_ADMINS }}
+
 
 jobs:
   commit_lint:
@@ -74,6 +78,9 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
+
+      - name: Check build
+        run: yarn build
 
   auto_merge_dependabot:
       name: Auto-approve dependabot pull requests

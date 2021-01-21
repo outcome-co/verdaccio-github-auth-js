@@ -1,0 +1,16 @@
+# This query is only used for testing
+query getOrganizationTeamNames($login: String!, $first: Int = 20, $after: String = null) {
+    organization(login: $login) {
+        teams(first: $first, after: $after) {
+            edges {
+                node {
+                    name
+                }
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+}
