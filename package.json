@@ -49,7 +49,7 @@
     "limiter": "^1.1.5",
     "lodash": "^4.17.20",
     "node-cache": "^5.1.2",
-    "zod": "^2.0.0-beta.30"
+    "zod": "^3.0.0-alpha.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
