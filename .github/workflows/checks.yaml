@@ -63,7 +63,7 @@ jobs:
           node-version: ${{ env.node_version }}
 
       - name: Configure yarn cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.4
         with:
           path: ${{ env.YARN_CACHE_FOLDER }}
           key: yarn-${{ hashFiles('./yarn.lock') }}
