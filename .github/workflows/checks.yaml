@@ -96,7 +96,7 @@ jobs:
             github-token: ${{ secrets.OTTO_TOKEN }}
 
         - name: Auto-merge
-          uses: "pascalgn/automerge-action@v0.13.0"
+          uses: "pascalgn/automerge-action@v0.13.1"
           env:
             GITHUB_TOKEN: "${{ secrets.OTTO_TOKEN }}"
             MERGE_LABELS: ""
